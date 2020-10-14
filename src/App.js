@@ -8,12 +8,12 @@ import {
   SyncOutlined,
   LoadingOutlined
 } from '@ant-design/icons'
-import TodoList from './components/TodoList';
 
-import HomePage from './pages/HomePage';
-import ContactPage from './pages/ContactPage';
-import FeaturePage from './pages/FeaturePage';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import CalculatorPage from './pages/CalculatorPage';
+import TodoListPage from './pages/TodoListPage';
+import DiceGamePage from './pages/FeaturePage';
 
 // import { data, data1 } from './data'
 
@@ -55,8 +55,9 @@ function App() {
       {/*//! ใส่ switch เพื่อป้องกันการ Redirect ซ้ำ */}
       <Switch>
         <Route exact path="/" component={HomePage} />
-        <Route path="/contact" component={ContactPage} />
-        <Route path="/feature" component={FeaturePage} />
+        <Route path="/todolist" component={TodoListPage} />
+        <Route path="/dicegame" component={DiceGamePage} />
+        <Route path="/calculator" component={CalculatorPage} />
         <Redirect to="/" />
       </Switch>
 

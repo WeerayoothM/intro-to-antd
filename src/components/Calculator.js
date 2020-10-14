@@ -4,7 +4,8 @@ import { Typography, Button, Col, Divider, Input, List, Row } from "antd";
 function Calculator() {
     const [result, setResult] = useState(0)
     const [numDisplay, setNumDisplay] = useState("0")
-    const [previousInput, setPreviousInput] = useState("0")
+    const [previousNumber, setpreviousNumber] = useState("0")
+    const [previousInput, setpreviousInput] = useState("0")
     const [previousOperator, setPreviousOperator] = useState(null)
     const [isShowResult, setIsShowResult] = useState(false)
 
@@ -26,44 +27,61 @@ function Calculator() {
             case "8":
             case "9":
             case "0":
-                let newNumDisplay = numDisplay === "0" ? "" : numDisplay;
-                newNumDisplay += value
-                setNumDisplay(newNumDisplay)
-                return
+                if (previousInput === "number") {
+                    let newNumDisplay = numDisplay === "0" ? "" : numDisplay;
+                    newNumDisplay += value
+                    setpreviousInput("number")
+                    setNumDisplay(newNumDisplay)
+                    return
+                } else {
+                    let newNumDisplay = "";
+                    newNumDisplay += value;
+                    setpreviousInput("number")
+                    setNumDisplay(newNumDisplay)
+                    return
+                }
+
             case "+":
-                const resultAdd = previousOperator ? operator[previousOperator](previousInput, numDisplay) : operator["add"](previousInput, numDisplay);
+                const resultAdd = previousOperator ? operator[previousOperator](previousNumber, numDisplay) : operator["add"](previousNumber, numDisplay);
                 if (previousOperator) setResult(resultAdd);
                 setPreviousOperator("add");
-                setPreviousInput(resultAdd)
-                setNumDisplay("0")
+                setpreviousNumber(resultAdd)
+                setpreviousInput("operator")
+                // setNumDisplay("0")
                 return
             case "-":
-                const resultSubtract = previousOperator ? operator[previousOperator](previousInput, numDisplay) : operator["subtract"](previousInput, numDisplay);
+                const resultSubtract = previousOperator ? operator[previousOperator](previousNumber, numDisplay) : operator["subtract"](previousNumber, numDisplay);
                 if (previousOperator) setResult(resultSubtract);
                 setPreviousOperator("subtract");
-                setPreviousInput(resultSubtract)
-                setNumDisplay("0")
+                setpreviousNumber(resultSubtract)
+                setpreviousInput("operator")
+
+                // setNumDisplay("0")
                 return
             case "*":
-                const resultMultiple = previousOperator ? operator[previousOperator](previousInput, numDisplay) : operator["multiple"]("1", numDisplay);
+                const resultMultiple = previousOperator ? operator[previousOperator](previousNumber, numDisplay) : operator["multiple"]("1", numDisplay);
                 if (previousOperator) setResult(resultMultiple);
                 setPreviousOperator("multiple")
-                setPreviousInput(resultMultiple)
-                setNumDisplay("0")
+                setpreviousNumber(resultMultiple)
+                setpreviousInput("operator")
+
+                // setNumDisplay("0")
                 return
 
             case "/":
-                const resultDivide = previousOperator ? operator[previousOperator](previousInput, numDisplay) : operator["divide"](numDisplay, "1");
+                const resultDivide = previousOperator ? operator[previousOperator](previousNumber, numDisplay) : operator["divide"](numDisplay, "1");
                 if (previousOperator) setResult(resultDivide);
                 setPreviousOperator("divide")
-                setPreviousInput(resultDivide)
-                setNumDisplay("0")
+                setpreviousNumber(resultDivide)
+                setpreviousInput("operator")
+
+                // setNumDisplay("0")
                 return
             case "=":
                 if (previousOperator) {
-                    const newResult = operator[previousOperator](previousInput, numDisplay);
+                    const newResult = operator[previousOperator](previousNumber, numDisplay);
                     setResult(newResult);
-                    setPreviousInput(newResult)
+                    setpreviousNumber(newResult)
                     setIsShowResult(true);
                     setNumDisplay("0")
                     return
@@ -74,7 +92,7 @@ function Calculator() {
             case "AC":
                 setResult(0)
                 setNumDisplay("0")
-                setPreviousInput("0")
+                setpreviousNumber("0")
                 setPreviousOperator(null)
                 setIsShowResult(false)
                 return
@@ -82,7 +100,7 @@ function Calculator() {
                 if (numDisplay.includes('.')) return;
                 return setNumDisplay(prevValue => prevValue + ".")
             case "%":
-                // const resultDivide = previousOperator ? operator[previousOperator](previousInput, numDisplay) : operator["divide"](numDisplay, "1");
+                // const resultDivide = previousOperator ? operator[previousOperator](previousNumber, numDisplay) : operator["divide"](numDisplay, "1");
                 if (numDisplay) {
                     let percentValue = parseFloat(numDisplay) / 100
                     setNumDisplay(percentValue.toString())
@@ -103,7 +121,7 @@ function Calculator() {
             <Row justify='center'>
                 <div className='display'>
                     <div style={{ color: '#944317', fontSize: '2rem' }}><span>{numDisplay}</span></div>
-                    {isShowResult && <div style={{ borderTop: "solid #aaaaaa 1px", color: 'salmon', fontSize: '2rem' }}><span>{result}</span></div>}
+                    {isShowResult && <div style={{ borderTop: "solid #aaaaaa 1px", color: 'salmon', fontSize: '1.5rem' }}><span>ANS: {result}</span></div>}
                 </div>
             </Row>
             <Row justify='center'>

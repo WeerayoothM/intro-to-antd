@@ -1,10 +1,13 @@
+import { Button } from 'antd'
 import React from 'react'
-import TodoListHook from '../components/TodoListHook'
 
 function HomePage() {
     return (
-        <div >
-            <TodoListHook />
+        <div className="App-header" >
+            <h1 style={{ color: 'goldenrod' }}>My App</h1>
+            <Button type="link" href="/todolist" style={{ fontSize: '2rem', margin: "10px" }}>Todolist</Button>
+            <Button type="link" href="/calculator" style={{ fontSize: '2rem', margin: "10px" }}>Calculator</Button>
+            <Button type="link" href="/dicegame" style={{ fontSize: '2rem', margin: "10px" }}>Dicegame</Button>
         </div>
     )
 }

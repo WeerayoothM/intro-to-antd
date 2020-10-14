@@ -5,8 +5,9 @@ import '../App.css'
 import Header from '../components/Header';
 import ScoreCard from '../components/ScoreCard';
 import DiceCard from '../components/DiceCard';
+import { Button } from 'antd';
 
-function FeaturePage() {
+function DiceGamePage() {
     const [playerScore, setPlayerScore] = useState([0, 0]);
     const [currentPlayer, setCurrentPlayer] = useState(0);
     const [diceScore, setDiceScore] = useState(0);
@@ -42,14 +43,18 @@ function FeaturePage() {
 
     return (
         <>
+            <nav style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Button type="link" href="/" style={{ fontSize: '1rem', margin: "10px" }}>Home</Button>
+            </nav>
             <Header resetGame={resetGame} playerScore={playerScore} />
             <div className="container">
                 <ScoreCard name='1' score={playerScore[0]} active={currentPlayer === 0 ? true : false} />
                 <DiceCard roll={roll} keep={keep} roundScore={roundScore} diceScore={diceScore} />
                 <ScoreCard name='2' score={playerScore[1]} active={currentPlayer === 1 ? true : false} />
             </div>
+
         </>
     );
 }
 
-export default FeaturePage
+export default DiceGamePage
