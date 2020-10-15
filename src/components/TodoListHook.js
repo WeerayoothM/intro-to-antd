@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { Typography, Button, Col, Divider, Input, List, Row } from "antd";
 import { UnorderedListOutlined } from "@ant-design/icons";
 import _, { set } from "lodash";
+import TodoItem from "./TodoItem";
 const { Text } = Typography;
 
 function TodoListHook() {
     const [todoList, setTodoList] = useState([]);
     const [inputField, setInputField] = useState("");
-    const [editValue, setEditValue] = useState("");
+
     // Mock Data
     //   useEffect(() => {
     //     setTodoList([
@@ -23,7 +24,7 @@ function TodoListHook() {
         newTodoList.push({
             id: _.uniqueId(),
             task: inputField,
-            isEdit: false
+
         });
         setTodoList(newTodoList);
         setInputField("");
@@ -32,16 +33,10 @@ function TodoListHook() {
         const newTodolist = [...todoList].filter((todo) => todo.id !== id);
         setTodoList(newTodolist);
     };
-    const editTodoItem = (id, editValue) => {
+    const editTodoItem = (id, editTask) => {
         const newTodoList = [...todoList]
         const indexEdit = newTodoList.findIndex((todo) => todo.id === id)
-        newTodoList[indexEdit].task = editValue
-        setTodoList(newTodoList)
-    }
-    const setIsEdit = (id, isEditValue) => {
-        const newTodoList = [...todoList]
-        const indexEdit = newTodoList.findIndex((todo) => todo.id === id)
-        newTodoList[indexEdit].isEdit = isEditValue
+        newTodoList[indexEdit].task = editTask
         setTodoList(newTodoList)
     }
 
@@ -50,9 +45,8 @@ function TodoListHook() {
             <Col style={{ marginTop: "30px" }}>
                 <Row justify="center" style={{ marginBottom: "30px", fontSize: '2rem' }}>
                     <Text type="warning">
-                        <UnorderedListOutlined />
-            &nbsp; กรุณาใส่ Todo ที่ต้องการเพิ่ม
-          </Text>
+                        <UnorderedListOutlined />&nbsp; กรุณาใส่ Todo ที่ต้องการเพิ่ม
+                    </Text>
                 </Row>
                 <Row justify="center">
                     {/* อยากแบ่งช่อง Input กับ Todolist ใส่ Row ครอบ */}
@@ -66,7 +60,7 @@ function TodoListHook() {
                     <Col span={4}>
                         <Button onClick={addTodoItem} style={{ width: "100%" }}>
                             Add
-            </Button>
+                        </Button>
                     </Col>
                 </Row>
                 <Divider />
@@ -78,22 +72,7 @@ function TodoListHook() {
                         dataSource={todoList}
                         renderItem={(todo) => (
                             <List.Item>
-                                <Row style={{ width: "100%" }}>
-                                    <Col span={16}>
-                                        {!todo.isEdit && <Row justify="start">{todo.task}</Row>}
-                                        {todo.isEdit && <Input value={editValue} onChange={(e) => { editTodoItem(todo.id, e.target.value); setEditValue(e.target.value) }} />}
-                                    </Col>
-                                    <Col span={8} style={{ width: "100%", display: 'flex', justifyContent: 'flex-end' }} >
-                                        {!todo.isEdit && <Button onClick={() => { setEditValue(todo.task); setIsEdit(todo.id, true) }}>Edit</Button>}
-                                        {todo.isEdit && <Button onClick={() => setIsEdit(todo.id, false)}>Done</Button>}
-                                        &nbsp;
-                                        <Button
-                                            onClick={() => deleteTodoItem(todo.id)}
-                                            type="danger">
-                                            Delete
-                                        </Button>
-                                    </Col>
-                                </Row>
+                                <TodoItem todo={todo} deleteTodoItem={deleteTodoItem} editTodoItem={editTodoItem} />
                             </List.Item>
                         )} // ทำหน้าที่เหมือน map ข้องบน
                     />
